@@ -1,7 +1,31 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title KittySitter
+    // Latest compiled and minified CSS (bootstrap)
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    // Optional theme (bootstrap)
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css')
+    // Font awesome BootstrapCDN by MaxCDN
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
+    // Google CDN jQuery
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js')
+    // Latest compiled and minified JavaScript (bootstrap)
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+
+    // AngularJS lib
+    script(type='text/JavaScript', src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js')
+    script(type='text/JavaScript', src='http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js')
+    script(type='text/JavaScript', src='http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-cookies.js')
+    script(type='text/JavaScript', src='http://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.js')
+
+    link(rel='stylesheet', href='stylesheets/navbar.css')
+    block stylesheets
+    block scripts
+
   body
+    include navbar
     block content
