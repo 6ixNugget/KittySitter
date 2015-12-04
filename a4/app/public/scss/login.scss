@@ -1,0 +1,210 @@
+// Fonts
+
+@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+// Vendor
+
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+
+// Variables
+
+$base_bgcolor: #2c3338;
+$base_color: #606468;
+$base_font-family-fallback: sans-serif;
+$base_font-family: 'Open Sans';
+$base_font-size: .875rem;
+$base_font-weight: 400;
+$base_line-height: 1.5;
+
+$form-general_border-radus: .25rem;
+$form-general_color: #606468;
+$form-general_label_bgcolor: #363b41;
+$form-general_input_bgcolor: #3b4148;
+$form-general_input_bgcolor-hover: #434A52;
+$form-general_submit_bgcolor: #ea4c88;
+$form-general_submit_bgcolor-hover: #d44179;
+$form-general_submit_color: #eee;
+
+$grid_container_max-width: 20rem;
+$grid_container_width: 90%;
+
+$link_color: #eee;
+
+// Base
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: $base_bgcolor;
+  color: $base_color;
+  font: $base_font-weight #{$base_font-size}/#{$base_line-height} $base_font-family, $base_font-family-fallback;
+  margin: 0;
+  min-height: 100%;
+}
+
+a {
+  color: $link_color;
+  outline: 0;
+  text-decoration: none;
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+  }
+
+}
+
+input {
+  border: 0;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  transition: background-color .3s;
+}
+
+// Layout
+
+.site {
+
+  &_container {
+    flex: 1;
+    padding: 3rem 0;
+  }
+
+}
+
+// Forms
+
+.form {
+
+  input {
+
+    &[type="password"],
+    &[type="email"],
+    &[type="submit"] {
+      width: 100%;
+    }
+
+  }
+
+  &-general {
+    color: $form-general_color;
+
+    label,
+    input[type="email"],
+    input[type="password"],
+    input[type="submit"] {
+      border-radius: $form-general_border-radus;
+      padding: 1rem;
+  }
+
+    label {
+      background-color: $form-general_label_bgcolor;
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    input {
+
+      &[type="email"],
+      &[type="password"] {
+        background-color: $form-general_input_bgcolor;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+
+        &:focus,
+        &:hover {
+          background-color: $form-general_input_bgcolor-hover;
+        }
+
+      }
+
+      &[type="submit"] {
+        background-color: $form-general_submit_bgcolor;
+        color: $form-general_submit_color;
+        font-weight: bold;
+        text-transform: uppercase;
+
+        &:focus,
+        &:hover {
+          background-color: $form-general_submit_bgcolor-hover;
+        }
+
+      }
+
+    }
+
+  }
+
+  &_field {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  &_input {
+    flex: 1;
+  }
+
+  .error_display{
+      &_signin > p{
+          color: white;
+      }
+      &_signup > p{
+          color: white;
+      }
+
+  }
+
+}
+
+// Utilities
+
+.align {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.text {
+
+  &-center {
+    text-align: center;
+  }
+
+}
+
+// Grid
+
+.grid {
+
+  &_container {
+    margin: 0 auto;
+    max-width: $grid_container_max-width;
+    width: $grid_container_width;
+  }
+
+}

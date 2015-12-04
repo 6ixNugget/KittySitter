@@ -1,0 +1,101 @@
+@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif; }
+
+* {
+  box-sizing: border-box; }
+
+html {
+  height: 100%; }
+
+body {
+  background-color: #2c3338;
+  color: #606468;
+  font: 400 0.875rem/1.5 "Open Sans", sans-serif;
+  margin: 0;
+  min-height: 100%; }
+
+a {
+  color: #eee;
+  outline: 0;
+  text-decoration: none; }
+  a:focus, a:hover {
+    text-decoration: underline; }
+
+input {
+  border: 0;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  transition: background-color .3s; }
+
+.site_container {
+  flex: 1;
+  padding: 3rem 0; }
+
+.form input[type="password"], .form input[type="email"], .form input[type="submit"] {
+  width: 100%; }
+.form-general {
+  color: #606468; }
+  .form-general label,
+  .form-general input[type="email"],
+  .form-general input[type="password"],
+  .form-general input[type="submit"] {
+    border-radius: 0.25rem;
+    padding: 1rem; }
+  .form-general label {
+    background-color: #363b41;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem; }
+  .form-general input[type="email"], .form-general input[type="password"] {
+    background-color: #3b4148;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0; }
+    .form-general input[type="email"]:focus, .form-general input[type="email"]:hover, .form-general input[type="password"]:focus, .form-general input[type="password"]:hover {
+      background-color: #434A52; }
+  .form-general input[type="submit"] {
+    background-color: #ea4c88;
+    color: #eee;
+    font-weight: bold;
+    text-transform: uppercase; }
+    .form-general input[type="submit"]:focus, .form-general input[type="submit"]:hover {
+      background-color: #d44179; }
+.form_field {
+  display: flex;
+  margin-bottom: 1rem; }
+.form_input {
+  flex: 1; }
+.form .error_display_signin > p {
+  color: white; }
+.form .error_display_signup > p {
+  color: white; }
+
+.align {
+  align-items: center;
+  display: flex;
+  flex-direction: row; }
+
+.hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
+
+.text-center {
+  text-align: center; }
+
+.grid_container {
+  margin: 0 auto;
+  max-width: 20rem;
+  width: 90%; }
+
+/*# sourceMappingURL=login.css.map */

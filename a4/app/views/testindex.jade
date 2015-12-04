@@ -1,0 +1,48 @@
+doctype html
+head
+	include ./head.jade
+	title Index
+body.align
+	.site_container
+		include ./navbar.jade
+		.grid_container.form
+			.container-fluid
+				.row
+					.col-sm-3.col-md-2.sidebar
+						ul.nav.nav-sidebar
+							li.active
+								a(href='#')
+									| Overview 
+									span.sr-only (current)
+							li
+								a(href='#') Analytics
+					.col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
+						h1.page-header Dashboard
+						.table-responsive
+							table.table.table-striped
+								thead
+									tr
+										th Username
+										th Display name
+										th buttons
+									tr
+										td test@test.com
+										td Allench119
+										td 
+											button
+											button
+									tr
+										td test123@test.com
+										td zzzoooeee
+										td 
+											button
+											button
+									tr
+										td test123@test.com
+										td zzzoooeee
+										td 
+											button
+											button
+								tbody#table
+
+	script(src='js/index.js')

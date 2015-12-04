@@ -1,0 +1,51 @@
+doctype html
+head
+	meta(charset='UTF-8')
+	script(src='https://code.jquery.com/jquery-2.1.4.min.js')
+	title Login
+	link(rel='stylesheet', href='css/login.css')
+body.align
+	.site_container
+		.grid_container.form
+			.form_tab.signin
+				form.form.form-general(action='', method='post')
+					.error_display_signin
+					.form_field
+						label.fontawesome-user(for='login_username')
+							span.hidden Username
+						input#login_username.form_input(type='email', placeholder='Email', required='')                 
+					.form_field
+						label.fontawesome-lock(for='login_password')
+							span.hidden Password                       
+						input#login_password.form_input(type='password', placeholder='Password', required='')
+					.form_field
+						input#login_submit(type='submit', value='Sign In')       
+				p.text-center.form_toggle(tab-toggle='signup')
+					| Not a member? 
+					a(href='#') Sign up now
+					span.fontawesome-arrow-right   
+			.form_tab.signup
+				form.form.form-general(action='', method='post')
+					.error_display_signup
+					.form_field
+						label.fontawesome-user(for='signup_username')
+							span.hidden Username                 
+						input#signup_username.form_input(type='email', placeholder='Email', required='')        
+					.form_field
+						label.fontawesome-lock(for='signup_password')
+							span.hidden Password
+						input#signup_password.form_input(type='password', placeholder='Password', required='')
+					.form_field
+						label.fontawesome-lock(for='signup_reenter')
+							span.hidden Password        
+						input#signup_reenter.form_input(type='password', placeholder='Re-enter', required='')            
+					.form_field
+						input#signup_submit(type='submit', value='Sign Up')         
+				p.text-center.form_toggle(tab-toggle='signin')
+					| Already signed up? 
+					a(href='#') Sign in now
+					span.fontawesome-arrow-right
+				
+					
+	script(src='js/login.js')
+	script(src='js/login_controller.js')
