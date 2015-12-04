@@ -21,4 +21,30 @@ var postSchema = new Schema({
 	photo: {data: Buffer, required: false},
 });
 
+var UserModel = mongoose.model('User', userSchema);
+var PostModel = mongoose.model('Post', postSchema);
 
+exports.addUser = function(user){
+	user = new User{
+		username: user.username,
+		password: user.password
+	}
+	user.save(function(err){
+		if(err) return handleError(err);
+	});
+};
+
+exports.addComment = function(comment){
+	query = comment.target;
+	User.findOneAndUpdate(
+		query,
+		{$push: {"comment": {user: username, comment: comment:text}}},
+		{safe: true, upsert: true},
+		function(err) {
+			if(err) console.log(err);
+			else console.log("Successfully added commnet");
+		});
+
+}
+
+exports.newPost = function(title, address, )
