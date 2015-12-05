@@ -4,8 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+<<<<<<< Updated upstream
 
 var login = require('./routes/login');
+=======
+var routes = require('./routes/index');
+>>>>>>> Stashed changes
 var users = require('./routes/users');
 var routes = require('./routes/index');
 
