@@ -1,76 +1,17 @@
 extends layout
 
 block stylesheets
-  link(rel='stylesheet', href='stylesheets/index.css')
-  link(href='http://fonts.googleapis.com/css?family=PT+Sans:400,700', rel='stylesheet', type='text/css')
-  link(rel='stylesheet', href='stylesheets/login_modal_reset.css')
-  link(rel='stylesheet', href='stylesheets/login_modal_style.css')
-block scripts
-  script(src='javascripts/modernizr.js')
+  style.
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      height: 100%;
+    }
 
 block content
-  .cd-user-modal
-    // this is the entire modal form, including the background
-    .cd-user-modal-container
-      // this is the container wrapper
-      ul.cd-switcher
-        li
-          a(href='#0') Sign in
-        li
-          a(href='#0') New account
-      #cd-login
-        // log in form
-        form.cd-form
-          p.fieldset
-            label.image-replace.cd-email(for='signin-email') E-mail
-            input#signin-email.full-width.has-padding.has-border(type='email', placeholder='E-mail')
-            span.cd-error-message Error message here!
-          p.fieldset
-            label.image-replace.cd-password(for='signin-password') Password
-            input#signin-password.full-width.has-padding.has-border(type='text', placeholder='Password')
-            a.hide-password(href='#0') Hide
-            span.cd-error-message Error message here!
-          p.fieldset
-            input#remember-me(type='checkbox', checked='')
-            label(for='remember-me') Remember me
-          p.fieldset
-            input.full-width(type='submit', value='Login')
-        // <a href="#0" class="cd-close-form">Close</a>
-      // cd-login
-      #cd-signup
-        // sign up form
-        form.cd-form
-          p.fieldset
-            label.image-replace.cd-username(for='signup-username') Username
-            input#signup-username.full-width.has-padding.has-border(type='text', placeholder='Username')
-            span.cd-error-message Error message here!
-          p.fieldset
-            label.image-replace.cd-email(for='signup-email') E-mail
-            input#signup-email.full-width.has-padding.has-border(type='email', placeholder='E-mail')
-            span.cd-error-message Error message here!
-          p.fieldset
-            label.image-replace.cd-password(for='signup-password') Password
-            input#signup-password.full-width.has-padding.has-border(type='text', placeholder='Password')
-            a.hide-password(href='#0') Hide
-            span.cd-error-message Error message here!
-          p.fieldset
-            input.full-width.has-padding(type='submit', value='Create account')
-        // <a href="#0" class="cd-close-form">Close</a>
-      // cd-signup
-      #cd-reset-password
-        // reset password form
-        p.cd-form-message
-          | Lost your password? Please enter your email address. You will receive a link to create a new password.
-        form.cd-form
-          p.fieldset
-            label.image-replace.cd-email(for='reset-email') E-mail
-            input#reset-email.full-width.has-padding.has-border(type='email', placeholder='E-mail')
-            span.cd-error-message Error message here!
-          p.fieldset
-            input.full-width.has-padding(type='submit', value='Reset password')
-        p.cd-form-bottom-message
-          a(href='#0') Back to log-in
-      // cd-reset-password
-      a.cd-close-form(href='#0') Close
-  script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js')
-  script(src='javascripts/login_modal.js')
+  #map
+  script(src='/javascripts/map.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBtH3mU3MCHy5eit3re5KJl12UUOySL9cc&callback=initMap', async='', defer='')
