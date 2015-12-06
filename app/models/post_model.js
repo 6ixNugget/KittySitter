@@ -4,7 +4,7 @@ var fs = require('fs');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-mongoose.connect('mongodb://localhost/kitty');
+mongoose.createConnection('mongodb://localhost/kitty');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;

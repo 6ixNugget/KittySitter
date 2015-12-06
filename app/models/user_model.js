@@ -45,9 +45,7 @@ exports.addUser = function(username, password, email, callback){
 		rating: null,
 		salt: 0
 	});
-	user.save(function(err, user){
-		callback(err, user);
-	});
+	user.save(callback);
 };
 
 exports.updateSalt = function(username, salt, callback){
@@ -61,9 +59,7 @@ exports.updateSalt = function(username, salt, callback){
 
 exports.findUser = function(username, callback){
 	query = UserModel.where({username: username});
-	query.findOne(function(err, data){
-		callback(err, data);
-	});
+	query.findOne(callback);
 }
 
 exports.findAllUsers = function(callback){
