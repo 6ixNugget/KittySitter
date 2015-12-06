@@ -32,7 +32,7 @@ app.post('/signin', function (req, res){
 				}
 			});
 		}
-		else if(!status){
+		else if(!data){
 			res.send({status: false, error: "Please check your username"});
 		}
 	});
@@ -43,9 +43,6 @@ app.post('/signup', function (req, res) {
 	password = req.body.password;
 	email = req.body.email;
 	user_db.addUser(username, password, email, function(err, status){
-		if(err.name == "ValidationError"){
-			res.send({status: false, error: "username is taken"});
-		}
 		if(status){
 			salt = auth.makeSalt();
 			user_db.updateSalt(username, salt, function(err, data){
@@ -58,6 +55,9 @@ app.post('/signup', function (req, res) {
 			});
 		}
 		else if(err){
+			// if(err.name == "ValidationError"{
+			// 	res.send({status: false, error: "username is taken"});
+			// });
 			res.send({status: false, error:err});
 		}
 		else if(!status){
