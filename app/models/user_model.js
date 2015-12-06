@@ -22,19 +22,6 @@ var userSchema = new Schema({
 var UserModel = mongoose.model('User', userSchema);
 var CommentModel = mongoose.model('Comment', commentSchema);
 
-// var testSchema = new Schema({
-// 	test: {type: Number}
-// });
-
-// var testModel = mongoose.model('Test', testSchema);
-
-// exports.test = function(callback){
-// 	tester = new testModel({test: 3});
-// 	tester.save(function(err, testttt){
-// 		callback(err, testttt);
-// 	});
-// }
-
 exports.addUser = function(username, password, email, callback){
 	user = new UserModel({
 		username: username,
