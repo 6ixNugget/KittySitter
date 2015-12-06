@@ -29,4 +29,6 @@ $('#signin-form').submit(function(event){
 		// 	event.preventDefault();
 		// }
 	});
+
+	event.preventDefault();
 });
