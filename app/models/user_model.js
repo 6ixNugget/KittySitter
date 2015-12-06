@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-mongoose.createConnection('mongodb://localhost/kitty');
+mongoose.connect('mongodb://localhost/kitty');
 
 var commentSchema = new Schema({
 	commenter: {type: String},
@@ -22,6 +22,19 @@ var userSchema = new Schema({
 var UserModel = mongoose.model('User', userSchema);
 var CommentModel = mongoose.model('Comment', commentSchema);
 
+// var testSchema = new Schema({
+// 	test: {type: Number}
+// });
+
+// var testModel = mongoose.model('Test', testSchema);
+
+// exports.test = function(callback){
+// 	tester = new testModel({test: 3});
+// 	tester.save(function(err, testttt){
+// 		callback(err, testttt);
+// 	});
+// }
+
 exports.addUser = function(username, password, email, callback){
 	user = new UserModel({
 		username: username,
@@ -32,14 +45,8 @@ exports.addUser = function(username, password, email, callback){
 		rating: null,
 		salt: 0
 	});
-	user.save(function(err){
-		if(err) {
-			callback(err);
-		}
-		else {
-			console.log("Successfully added new user " + username);
-			callback(null);
-		}
+	user.save(function(err, user){
+		callback(err, user);
 	});
 };
 
@@ -48,118 +55,41 @@ exports.updateSalt = function(username, salt, callback){
 		{username: username},
 		{$set: {salt: salt}},
 		{new: true}, function(err, doc){
-			if(err){
-				callback(err);
-			}
-			else{
-				callback(null);
-			}
-	});
-}
-
-exports.verifySalt = function(username, salt, callback){
-	query = UserModel.where({username: username});
-	query.findOne(function(err, data){
-		if(err){
-			callback(err);
-		}
-		if(data){
-			if(data.salt == salt){
-				callback(data);
-			}
-			else{
-				callback(null);
-			}
-		}
-	});
-}
-
-exports.loginUser = function(username, password, callback){
-	query = UserModel.where({username: username});
-	query.findOne(function(err, doc){
-		if(err) {
-			callback(err);
-		}
-		else if(!doc){
-			callback(null);
-		}
-		else if(password == doc.password){
-			callback(doc);
-		}
-		else if(password != doc.password){
-			callback(null);
-		}
-	});
-}
-
-exports.findUserExists = function(username, callback){
-	query = UserModel.where({username: username});
-	query.findOne(function(err, data){
-		if(err) {
-			console.log(err);
-		}
-		else if(data){
-			callback(true);
-		}
-		else if(!data){
-			callback(false);
-		}
+			callback(err, doc);
 	});
 }
 
 exports.findUser = function(username, callback){
 	query = UserModel.where({username: username});
 	query.findOne(function(err, data){
-		if(err) {callback(err);}
-		else if(!data){
-			callback(null);
-		}
-		else{
-			callback(data);
-		}
+		callback(err, data);
+	});
+}
+
+exports.findAllUsers = function(callback){
+	UserModel.find(function(err, data){
+		callback(err, data);
 	});
 }
 
 exports.deleteUser = function(username, callback){
 	query = UserModel.where({username: username});
-	query.findOneAndRemove(function(err){
-		if(err) callback(err);
-		else{
-			callback(null);
-		}
+	query.findOneAndRemove(function(err, data){
+		callback(err, data);
 	});
 }
-exports.addComment = function(target, commenter, comment, callback){
+exports.addComment = function(target, commenter, comment, cb){
 	query = UserModel.where({username: target});
-	newcomment = new Comment({
+	newcomment = new CommentModel({
 		commenter: commenter,
 		text: comment
 	});
 	UserModel.findOneAndUpdate(
 		query,
 		{$push: {comment: newcomment}},
-		function(err) {
-			if(err) {callback(err);}
-			else {
-				console.log("Successfully added comment");
-				callback(null);
-			}
+		function(err, data) {
+			cb(err, data);
 		});
-}
-
-exports.rating = function(username, callback){
-	query = UserModel.where({username:username});
-	UserModel.findOneAndUpdate(username, function(err, data){
-		if(err){
-			callback(err);
-		}
-		else if(data){
-			callback(data.rating);
-		}
-		else if(!data){
-			callback("User does not exist!");
-		}
-	});
 }
 
 exports.newRating = function(username, newrating, callback){
@@ -167,36 +97,13 @@ exports.newRating = function(username, newrating, callback){
 	UserModel.findOneAndUpdate(
 		query,
 		{$push: {rating: newrating}},
-		function(err, model){
-			if(err){
-				callback(err);
-			}
-			else{
-				console.log("Successfully added new rating");
-				callback(null);
-			}
+		function(err, data){
+			callback(err, data);
 		});
 }
 
-exports.avgRating = function(username, callback){
-	query = UserModel.where({username: username});
-	UserModel.findone(username, function(err, data){
-		if(err){
-			callback(err);
-		}
-		else if(data.rating){
-			sum = 0;
-			for(i = 0; i < data.rating.length; i++){
-				sum += data.rating[i];
-			}
-			avg = sum/data.rating.length;
-			callback(avg);
-		}
-	});
-}
-
 exports.removeAll = function(callback){
-	UserModel.remove({}, function(err, removed){
-		if(err){callback(err);}
+	UserModel.remove({}, function(err, data){
+		callback(err, data);
 	});
 }

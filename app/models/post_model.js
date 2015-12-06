@@ -49,30 +49,21 @@ exports.newPost = function(creator, title, description, address, contact, startD
 	});
 }
 
-exports.test = function(callback){
-	tester = new testModel({test: 3});
-	tester.save(function(err, testttt){
-		callback(err, testttt);
-	});
-}
+// exports.test = function(callback){
+// 	tester = new testModel({test: 3});
+// 	tester.save(function(err, testttt){
+// 		callback(err, testttt);
+// 	});
+// }
 exports.findPost = function(id, callback){
 	PostModel.findById(id, function(err, post){
-		if(err){
-			callback(err);
-		}
-		else{
-			callback(post);
-		}
+		callback(err, post);
 	});
 }
 
 exports.deletePost = function(id, callback){
-	PostModel.findByIdAndRemove(id, function(err){
-		if(err) 
-			{callback(err);}
-		else{
-			callback(null);
-		}
+	PostModel.findByIdAndRemove(id, function(err, post){
+		callback(err, post);
 	});
 }
 
@@ -89,11 +80,6 @@ exports.allPosts = function(callback){
 
 exports.getPostByUser = function(username, callback){
 	PostModel.find({username: username}, function(err, posts){
-		if(err){
-			callback(err);
-		}
-		else{
-			callback(posts);
-		}
+		callback(err, posts);
 	});
 }

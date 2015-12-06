@@ -1,13 +1,12 @@
 var mongoose = require("mongoose");
 var user = require('../models/user_model');
+var avg = require('../helper/avg');
 var assert = require('assert');
 var model = user.UserModel;
 
 mongoose.createConnection('mongodb://localhost/user_test');
 
 describe("User Model Test", function(){
-	var currentUser;
-
 	before(function(done){
 		user.removeAll(function(err){
 			if(err){
@@ -35,64 +34,95 @@ describe("User Model Test", function(){
 		done();
 	});
 
-	it("use findUserExists and expect the user to exist", function(){
-		user.findUserExists("meeko", function(status){
-			assert.equal(status, true);
-		});
-	});
+	// it("create testing", function(done){
+	// 	console.log(123);
+	// 	user.test(function(err, data){
+	// 		console.log(data);
+	// 	});
+	// 	done();
+	// });
 
 	it("add a new valid user", function(done){
-		user.addUser("adele", "password", "hello@gmail.com", function(status){
-			if(!status){
-				user.findUser("adele", function(user){
-					assert.equal("adele", user.username);
-					assert.equal("password", user.password);
-					assert.equal("hello@gmail.com", user.email);
+		user.addUser("adele", "password", "hello@gmail.com", function(err, status){
+			assert.equal(status.username, "adele");
+			assert.equal(status.password, "password");
+			assert.equal(status.email, "hello@gmail.com");
+		});
+		done();
+	});
+
+	it("add an invalid user with no email", function(done){
+		user.addUser("jenny", "hellojenny", null, function(err, status){
+			assert.equal("ValidationError", err.name);
+		});
+		done();
+	});
+
+	it("add an invalid user with no username", function(done){
+		user.addUser(null, "hellojenny", "jenny@gmail.com", function(err, status){
+			assert.equal("ValidationError", err.name);
+		});
+		done();
+	});
+
+    it("add a duplicate user", function(done){
+		user.addUser("meeko", "hellojenny", "jenny@gmail.com", function(err, status){
+			assert.equal("MongoError", err.name);
+		});
+		done();
+	});
+
+	it("use find user exists and expect the user to exist", function(done){
+		user.findUser("meeko", function(err, data){
+			// assert.equal("meeko", data.username);
+			// assert.equal("123123", data.password);
+			// assert.equal("meeko@gmail.com", data.email);
+			user.addComment("meeko", function(err, data){
+				user.findUser("meeko", function(err, data){
+					console.log(data);
 				});
-			}
-		});
-		done();
-	});
-
-	it("add an invalid user", function(done){
-		user.addUser("jenny", "hellojenny", null, function(doc){
-			assert.equal("ValidationError", doc);
-		});
-		done();
-	});
-
-	it("find a valid user", function(done){
-		user.findUser("meeko", function(doc){
-			assert.equal(doc.username, "meeko");
-			assert.equal(doc.password, "123123");
-			assert.equal(doc.email, "meeko@gmail.com");
+			});
 		});
 		done();
 	});
 
 	it("find a null user", function(done){
-		user.findUser("", function(doc){
-			assert.equal(null, doc);
+		user.findUser("", function(err, data){
+			assert.equal(data, null);
 		});
 		done();
 	});
 
 	it("find a user that does not exist", function(done){
-		user.findUser("Allen", function(doc){
-			assert.equal(null, doc);
+		user.findUser("Allen", function(err, data){
+			assert.equal(null, data);
 		});
 		done();
 	});
 
-	it("login with valid credentials", function(){
-		user.loginUser("meeko", "123123", function(status){
-			assert.equal(null, status);
-		})
-	});
+	// it("login with valid credentials", function(){
+	// 	user.findUser("meeko", "123123", function(err, status){
+	// 		assert.equal("meeko", status.username);
+	// 		assert.equal("123123", status.password);
+	// 	});
+	// });
 
-	it("delete user test", function(done){
-		user.deleteUser("meeko", function(doc){
-			assert.equal(null, doc);
+	// it("delete user test", function(done){
+	// 	user.deleteUser("meeko", function(err, data){
+	// 		user.findAllUsers(function(err, data){
+	// 			//assert.equal(null, data);
+	// 		})
+	// 	});
+	// 	done();
+	// });
+
+	it("add a comment to meeko user", function(done){
+		user.addComment("meeko", "anna", "cutest cat ever", function(err, data){
+			console.log(0);
+			user.findUser("meeko", function(err, data){
+				console.log(111);
+				console.log(data);
+			});
 		});
 		done();
 	});

@@ -3,6 +3,8 @@ var user = require('../models/user_model');
 var post = require('../models/post_model');
 var assert = require('assert');
 
+mongoose.connection.close();
+
 mongoose.createConnection('mongodb://localhost/post_test');
 
 describe("Post Model Test", function(){
@@ -33,6 +35,11 @@ describe("Post Model Test", function(){
 				console.log(err);
 			}
 		});
+		post.newPost("annie", "A blue eye!",null, "832 Bay Street, Toronto", "meeko@gmail.com", "2015-12-23", "2015-12-28", img, function(err){
+			if(err){
+				console.log(err);
+			}
+		});		
 		done();
 	});
 
@@ -47,6 +54,7 @@ describe("Post Model Test", function(){
 				console.log(err);
 			}
 		});
+		mongoose.connection.close();
 		done();
 	});
 
@@ -109,6 +117,12 @@ describe("Post Model Test", function(){
 				console.log(data);
 				assert.notDeepEqual(data, []);
 			});
+		});
+	});
+
+	it("returns all posts in the database of the user", function(done){
+		post.getPostByUser("annie", function(err, data){
+			console.log(data);
 		});
 	});
 });
