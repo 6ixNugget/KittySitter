@@ -126,4 +126,64 @@ describe("User Model Test", function(){
 		});
 		done();
 	});
+
+	it("add a comment to user that does not exist", function(done){
+		user.addComment("allen", "anna", "cutest cat ever", function(err, data){
+			assert.equal(data, null);
+		});
+		done();
+	});
+
+	it("finds all users when there is none", function(done){
+		user.removeAll(function(err, data){
+			if(!err){
+				user.findAllUsers(function(err, data){
+					assert.equal(data, null);
+				});
+			}
+		});
+		done();
+	});
+
+	it("finds all users when there is only one user", function(done){
+		user.findAllUsers(function(err, data){
+			assert.equal(data[0].username, "meeko");
+			assert.equal(status.password, "123123");
+			assert.equal(status.email, "meeko@gmail.com")
+		});
+		done();
+	});
+
+	it("add a new rating to a user with no ratings before", function(done){
+		user.newRating("annie", 5, function(err, data){
+			if(!err){
+				user.findUser("annie", function(err, data){
+					assert.equal(data.rating, [5]);
+				});
+			}
+		});
+		done();
+	});
+
+	it("add an invalid rating to a user with no ratings before", function(done){
+		user.newRating("annie", "ho", function(err, data){
+			if(!err){
+				user.findUser("annie", function(err, data){
+					assert.equal(data.rating,null);
+				});
+			}
+		});
+		done();
+	});
+
+	it("add an valid rating to a user that does not exist", function(done){
+		user.newRating("allen", 5, function(err, data){
+			if(!err){
+				user.findUser("allen", function(err, data){
+					assert.equal(data, null);
+				});
+			}
+		});
+		done();
+	});
 });

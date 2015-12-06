@@ -120,9 +120,27 @@ describe("Post Model Test", function(){
 		});
 	});
 
-	it("returns all posts in the database of the user", function(done){
-		post.getPostByUser("annie", function(err, data){
-			console.log(data);
+	it("testing deleteAllPosts with two posts", function(done){
+		post.newPost("jen", "A cute cat looking for sitter!", null, "222 College St", "123@mail.com", "2015-09-23", "2016-09-25", null, function(err, doc){
+			if(err) console.log(err);
+		}
+		post.deleteAllPosts(function(err, data){
+			if(!err){
+				post.allPosts, function(err, data){
+					//assert.equal(data, []);
+				}
+			}
 		});
+		done();
 	});
+
+	it("gets all the posts by a specific user", function(done){
+		post.getPostByUser("annie", function(err, posts){
+			assert.equal(posts[0].title, "A cute cat looking for sitter!");
+			assert.equal(posts[0].description, null);
+			assert.equal(posts[0].address, "832 Bay Street, Toronto");
+			assert.equal(posts[0].contact, "meeko@gmail.com");
+		});
+		done();
+	});	
 });
