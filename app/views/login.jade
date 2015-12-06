@@ -20,16 +20,17 @@ block content
           a(href='#0') New account
       #cd-login
         // log in form
-        form.cd-form
+        form.cd-form#signin-form(action='', method='post')
           p.fieldset
-            label.image-replace.cd-email(for='signin-email') E-mail
-            input#signin-email.full-width.has-padding.has-border(type='email', placeholder='E-mail')
-            span.cd-error-message Error message here!
+            label.image-replace.cd-email(for='signin-email') Username
+            input#signin-email.full-width.has-padding.has-border(type='text', placeholder='Username')
+            span.cd-error-message Username is invalid.
           p.fieldset
             label.image-replace.cd-password(for='signin-password') Password
             input#signin-password.full-width.has-padding.has-border(type='text', placeholder='Password')
             a.hide-password(href='#0') Hide
-            span.cd-error-message Error message here!
+            span.cd-error-message Password is invalid.
+            span#login-error.cd-error-message Placeholder
           p.fieldset
             input#remember-me(type='checkbox', checked='')
             label(for='remember-me') Remember me
@@ -74,3 +75,4 @@ block content
       a.cd-close-form(href='#0') Close
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js')
   script(src='javascripts/login_modal.js')
+  script(src='javascripts/login.js')

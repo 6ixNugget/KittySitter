@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/kitty');
+mongoose.createConnection('mongodb://localhost/kitty');
 
 var commentSchema = new Schema({
 	commenter: {type: String},

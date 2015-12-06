@@ -14,14 +14,17 @@ var data = {id: 123123123213,
 
 // GET Index page.
 router.get('/', function(req, res, next) {
-  res.render('index');
+  res.render('index', {loginStatus: {status: true, username: "Allen"}});
 });
 
 router.get('/post/:post_id', function(req, res, next){
 	data.startDate = new Date();
 	data.endDate = new Date();
 	console.log(data.startDate);
-	res.render('post', {postData: data, post_id: req.params.post_id});
+	res.render('post', {postData: data, 
+						post_id: req.params.post_id,
+						loginStatus: {status: true, username: "Allen"}
+					});
 });
 
 module.exports = router;

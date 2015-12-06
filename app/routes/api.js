@@ -16,8 +16,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', function (req, res){
 	username = req.body.username;
 	password = req.body.password;
+<<<<<<< Updated upstream
 	if(username == undefined) {res.render('login'); return;}
 	user_db.findUser(username, function(err, data){
+=======
+	if(username == undefined) {res.send({status: false, error: "Username is undefined"});}
+	user_db.loginUser(username, password, function(err, status){
+>>>>>>> Stashed changes
 		if(err){
 			res.send({status: false, error:"Unkown!"});
 		}

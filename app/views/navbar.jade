@@ -10,14 +10,23 @@ nav.navbar.navbar-default.navbar-custom.navbar-fixed-top
       a.navbar-brand(href='#') KittySitter
     // Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse.main-nav
-      
-      ul.nav.navbar-nav.navbar-right
-        li
-          a.cd-signin(href='#')
-            | Sign In 
-            span.sr-only (current)
-        li
-          a.cd-signup(href='#') Sign Up
+      if !loginStatus.status
+        ul.nav.navbar-nav.navbar-right
+          li
+            a.cd-signin(href='#')
+              | Sign In 
+              span.sr-only (current)
+          li
+            a.cd-signup(href='#') Sign Up
+      else
+        ul.nav.navbar-nav.navbar-right
+          li
+            a(href='#') Hi #{loginStatus.username}!
+          li
+            a(href='#')
+              | Sign Out 
+              span.sr-only (current)
+
       form.navbar-form.navbar-right(role='search')
         .form-group
           input.form-control(type='text', placeholder='Search')
