@@ -17,14 +17,16 @@ $('#signin-form').submit(function(event){
 
 
 	$.post('/api/signin', {username: username, password: password}, function(data){
-		if (data.status){
-			Cookies.set('salt', data.salt);
-			Cookies.set('username', data.username);
-			window.location.replace("/");
-		}else{
-			$('#login-error').text(data.error);
-			$('#login-error').toggleClass('is-visible');
-			event.preventDefault();
-		}
+		alert(data.error);
+		event.preventDefault();
+		// if (data.status){
+		// 	Cookies.set('salt', data.salt);
+		// 	Cookies.set('username', data.username);
+		// 	window.location.replace("/");
+		// }else{
+		// 	$('#login-error').text(data.error);
+		// 	$('#login-error').toggleClass('is-visible');
+		// 	event.preventDefault();
+		// }
 	});
 });

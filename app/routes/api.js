@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', function (req, res){
 	username = req.body.username;
 	password = req.body.password;
-
 	if(username == undefined) {res.send({status: false, error: "Username is undefined"});}
 	user_db.findUser(username, password, function(err, status){
 		if(err){
