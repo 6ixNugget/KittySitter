@@ -4,10 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require("mongoose");
+var mocha = require("mocha");
 
 var login = require('./routes/login');
 var users = require('./routes/users');
 var routes = require('./routes/index');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -26,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/login', login);
-
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
