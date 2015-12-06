@@ -1,17 +1,33 @@
 extends layout
 
 block stylesheets
-  style.
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      height: 100%;
-    }
+  link(rel='stylesheet', href='/stylesheets/index.css')
+  link(href='https://fonts.googleapis.com/css?family=Raleway:200', rel='stylesheet', type='text/css')
+  link(href='https://fonts.googleapis.com/css?family=Montserrat', rel='stylesheet', type='text/css')
+
 
 block content
-  #map
+  .container
+    #map
+    .right-half
+      .posts-banner 
+        p Posts
+      .posts-container
+        ul
+          li.post-li
+            a(href="/post/1")
+              h3.post-title Cutest kitty in the mission!
+              .post-img
+                img(src='http://mcdaniel.hu/wp-content/uploads/2015/01/6784063-cute-cats-hd.jpg')
+          li.post-li
+            a(href='/post/2')
+              h3.post-title  Blah Blah but Blah bah
+              .post-img
+                img(src='http://www.pageresource.com/wallpapers/wallpaper/cats-love-cat_809088.jpg')
+          li.post-li
+            a(href='/post/3')
+              h3.post-title Ehhh Lmao We did it!
+              .post-img
+                img(src='https://www.petfinder.com/wp-content/uploads/2012/11/101438745-cat-conjunctivitis-causes.jpg')
   script(src='/javascripts/map.js')
   script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBtH3mU3MCHy5eit3re5KJl12UUOySL9cc&callback=initMap', async='', defer='')

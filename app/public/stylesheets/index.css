@@ -1,7 +1,83 @@
-html { 
-	background: url('/images/bg.jpg') no-repeat center center fixed; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
+* {
+	box-sizing: border-box;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: #F0F8FF;
+}
+.container{
+	display: table;
+	width: 100%;
+}
+#map {
+	height: 100%;
+	width: 50%;
+	position: absolute;
+	left: 0px;
+}
+.right-half{
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	right: 0px;
+	float: left;
+}
+.posts-banner{
+	position: absolute;
+	top: 50px;
+	width: 100%;
+	font-size: 3em;
+	height: 8%;
+	background-color: #f0f4ff;
+}
+.posts-banner p{
+	font-family: 'Raleway', sans-serif;
+	margin-left: 20px;
+}
+.posts-container{
+	position: absolute;
+	width: 100%;
+	height: calc(92% - 50px);
+	top: calc(8% + 50px);
+	overflow: scroll;
+}
+.posts-container ul{
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+.post-title{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 2em;
+	padding-left: 1em;
+}
+.post-li{
+	width: 100%;
+}
+.post-img{
+	margin: 0px;
+	width: 100%;
+}
+.post-img img{
+	position: relative;
+	width: 100%;
+}
+/* one post styles */
+.post-container {
+	width: 100%;
+	padding: 0px 40px;
+}
+.post-container hr{
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }

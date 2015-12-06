@@ -1,0 +1,36 @@
+extends layout
+
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/index.css')
+  link(href='https://fonts.googleapis.com/css?family=Raleway:200', rel='stylesheet', type='text/css')
+  link(href='https://fonts.googleapis.com/css?family=Montserrat', rel='stylesheet', type='text/css')
+
+block content
+  .container
+    #map
+    .right-half
+      .posts-banner 
+        p Post
+      .posts-container
+        .post-container
+          h3.post-title #{postData.title}
+          hr
+          .post-img
+            img(src='http://mcdaniel.hu/wp-content/uploads/2015/01/6784063-cute-cats-hd.jpg')
+          hr
+          h3 Description
+            h5 #{postData.description}
+          h3 Address
+            h5 #{postData.address}
+          h3 Contant Email
+            h5 #{postData.contact}
+          h3 Start Date
+            h5 #{postData.startDate.toLocaleDateString()}
+          h3 End Date
+            h5 #{postData.endDate.toLocaleDateString()}
+          h3 Post By
+            h5 #{postData.username}
+
+
+  script(src='/javascripts/map.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBtH3mU3MCHy5eit3re5KJl12UUOySL9cc&callback=initMap', async='', defer='')

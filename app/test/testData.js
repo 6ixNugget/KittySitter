@@ -1,0 +1,1 @@
+{title: "Cutest kitty in the mission!", description: "Meeko is one of the cutest cat in the world, but we have to leave a couple of days. Please help us kittysitting Meeko, we will provide small compensation."}
