@@ -14,6 +14,10 @@ var userSchema = new Schema({
 });
 
 var UserModel = mongoose.model('User', userSchema);
+<<<<<<< HEAD
+=======
+var CommentModel = mongoose.model('Comment', commentSchema);
+>>>>>>> allench119/master
 
 exports.addUser = function(username, password, email, callback){
 	var user = new UserModel({
