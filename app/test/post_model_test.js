@@ -3,6 +3,8 @@ var user = require('../models/user_model');
 var post = require('../models/post_model');
 var assert = require('assert');
 
+mongoose.connection.close();
+
 mongoose.createConnection('mongodb://localhost/post_test');
 
 describe("Post Model Test", function(){
@@ -33,6 +35,11 @@ describe("Post Model Test", function(){
 				console.log(err);
 			}
 		});
+		post.newPost("annie", "A blue eye!",null, "832 Bay Street, Toronto", "meeko@gmail.com", "2015-12-23", "2015-12-28", img, function(err){
+			if(err){
+				console.log(err);
+			}
+		});		
 		done();
 	});
 
@@ -47,6 +54,7 @@ describe("Post Model Test", function(){
 				console.log(err);
 			}
 		});
+		mongoose.connection.close();
 		done();
 	});
 
@@ -111,4 +119,28 @@ describe("Post Model Test", function(){
 			});
 		});
 	});
+
+	it("testing deleteAllPosts with two posts", function(done){
+		post.newPost("jen", "A cute cat looking for sitter!", null, "222 College St", "123@mail.com", "2015-09-23", "2016-09-25", null, function(err, doc){
+			if(err) console.log(err);
+		}
+		post.deleteAllPosts(function(err, data){
+			if(!err){
+				post.allPosts, function(err, data){
+					//assert.equal(data, []);
+				}
+			}
+		});
+		done();
+	});
+
+	it("gets all the posts by a specific user", function(done){
+		post.getPostByUser("annie", function(err, posts){
+			assert.equal(posts[0].title, "A cute cat looking for sitter!");
+			assert.equal(posts[0].description, null);
+			assert.equal(posts[0].address, "832 Bay Street, Toronto");
+			assert.equal(posts[0].contact, "meeko@gmail.com");
+		});
+		done();
+	});	
 });
