@@ -1,8 +1,7 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var user_db = require('../models/user_model');
-var post_db = require('../models/post_model');
+var model = require('../models/model');
 var auth = require('../helper/auth');
 var avg = require('../helper/avg');
 var app = express();
@@ -16,24 +15,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', function (req, res){
 	username = req.body.username;
 	password = req.body.password;
-	if(username == undefined) {res.send({status: false, error: "Username is undefined"});}
-	user_db.findUser(username, password, function(err, status){
+	if(!username) {res.send({status: false, error: "Username is undefined"});return;}
+	model.findUser(username, function(err, docs){
 		if(err){
-			res.send({status: false, error:"Unkown!"});
+			res.send({status: false, error:"Unknown!"});
 		}
-		else if(data.password == password){
+		else if(docs.length == 0){
+			res.send({status: false, error: "Please check your username"});
+		}
+		else if(docs[0].password == password){
 			salt = auth.makeSalt();
-			user_db.updateSalt(username, salt, function(err, data){
+			model.updateSalt(username, salt, function(err, doc){
 				if(err){
-					res.send({status: false, error:"Unkown!"});
+					res.send({status: false, error:"Unknown!"});
 				}
-				else if(data){
+				else if(doc){
 					res.send({status: true, salt: salt, username: username});					
 				}
 			});
-		}
-		else if(!status){
-			res.send({status: false, error: "Please check your username"});
 		}
 	});
 });
@@ -42,15 +41,12 @@ app.post('/signup', function (req, res) {
 	username = req.body.username;
 	password = req.body.password;
 	email = req.body.email;
-	user_db.addUser(username, password, email, function(err, status){
-		if(err.name == "ValidationError"){
-			res.send({status: false, error: "username is taken"});
-		}
+	model.addUser(username, password, email, function(err, status){
 		if(status){
 			salt = auth.makeSalt();
-			user_db.updateSalt(username, salt, function(err, data){
+			model.updateSalt(username, salt, function(err, data){
 				if(err){
-					res.send({status: false, error:"Unkown!"});
+					res.send({status: false, error:"Unknown!"});
 				}
 				else if(data){
 					res.send({status: true, salt: salt, username: username});
@@ -58,6 +54,10 @@ app.post('/signup', function (req, res) {
 			});
 		}
 		else if(err){
+			if(err.name == "MongoError"){
+				res.send({status: false, error: "username is taken"});
+				return;
+			};
 			res.send({status: false, error:err});
 		}
 		else if(!status){
@@ -76,7 +76,7 @@ app.post('/newPost', function(req, res){
 	startDate = req.body.startDate;
 	endDate = req.body.endDate;
 	photo = req.body.photo;
-	user_db.findUser(username, function(err, data){
+	model.findUser(username, function(err, data){
 		if(err || !data){
 			res.send({status:false, error: "Unknown error!"});
 		}
@@ -85,7 +85,7 @@ app.post('/newPost', function(req, res){
 				res.send({status:false, error: "Please login again"});
 			}
 			else{
-				post_db.newPost(username, title, address, description, contact, startDate, endDate, photo, function(err, data){
+				model.newPost(username, title, address, description, contact, startDate, endDate, photo, function(err, data){
 					if(err){
 						res.send({status:false, error: "Something went wrong"});
 					}
@@ -103,7 +103,7 @@ app.post('/newComment', function(req, res){
 	salt = req.cookie.salt;
 	target = req.body.username;
 	text = req.body.text;
-	user_db.findUser(username, function(err, data){
+	model.findUser(username, function(err, data){
 		if(err || !data){
 			res.send({status:false, error: "Unknown error!"});
 		}
@@ -112,7 +112,7 @@ app.post('/newComment', function(req, res){
 				res.send({status:false, error: "Please login again"});
 			}
 			else{
-				user_db.newComment(target, commenter, text, function(err, data){
+				model.newComment(target, commenter, text, function(err, data){
 					if(err){
 						res.send({status:false, error: "Something went wrong"});
 					}
@@ -130,7 +130,7 @@ app.post('/newRating', function(req, res){
 	target = req.body.username;
 	salt = req.cookie.salt;
 	rater = req.cookie.username;
-	user_db.findUser(username, function(err, data){
+	model.findUser(username, function(err, data){
 		if(err || !data){
 			res.send({status:false, error: "Unknown error!"});
 		}
@@ -139,7 +139,7 @@ app.post('/newRating', function(req, res){
 				res.send({status:false, error: "Please login again"});
 			}
 			else{
-				user_db.newRating(target, rating, function(err, data){
+				model.newRating(target, rating, function(err, data){
 					if(err){
 						res.send({status:false, error: "Something went wrong"});
 					}
@@ -153,7 +153,7 @@ app.post('/newRating', function(req, res){
 });
 
 app.get('/getAllPosts', function(req, res){
-	post_db.allPosts(function(err, posts){
+	model.allPosts(function(err, posts){
 		if(err){
 			res.send({status: false});
 		}
@@ -169,7 +169,7 @@ app.get('/getAllPosts', function(req, res){
 
 app.get('/getUserByUsername', function(req, res){
 	username = req.body.username;
-	user_db.findUser(username, function(err, user){
+	model.findUser(username, function(err, user){
 		if(err){
 			res.send({status: false});
 		}
@@ -184,7 +184,7 @@ app.get('/getUserByUsername', function(req, res){
 
 app.get('/getPostById', function(req, res){
 	id = req.body.id;
-	post_db.findPost(id, function(err, post){
+	model.findPost(id, function(err, post){
 		if(err){
 			res.send({status: false});
 		}
@@ -198,7 +198,7 @@ app.get('/getPostById', function(req, res){
 });
 
 app.post('/removeAllUsers', function(req, res){
-	user_db.removeAll(function(err, data){
+	model.removeAll(function(err, data){
 		if(err){
 			res.send({status: false, error: "Database error"});
 		}
@@ -210,7 +210,7 @@ app.post('/removeAllUsers', function(req, res){
 
 app.post('/avgRating', function(req, res){
 	user = req.body.username;
-	user_db.findUser(user, function(err, data){
+	model.findUser(user, function(err, data){
 		if(err){
 			res.send({status: false, error: err});
 		}
@@ -229,7 +229,7 @@ app.post('/avgRating', function(req, res){
 
 app.post('/getUserPosts', function(req, res){
 	user = req.body.username;
-	post_db.getPostByUser(user, function(err, posts){
+	model.getPostByUser(user, function(err, posts){
 		if(err){
 			res.send({status: false, error: err})
 		}
