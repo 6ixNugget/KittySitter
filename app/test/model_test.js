@@ -1,10 +1,11 @@
 var mongoose = require("mongoose");
-var user = require('../models/user_model');
+var user = require('../models/model');
 var avg = require('../helper/avg');
 var assert = require('assert');
+var compare = require('comparejs');
 var model = user.UserModel;
 
-mongoose.connect('mongodb://localhost/user_test');
+mongoose.createConnection('mongodb://localhost/user_test');
 
 describe("User Model Test", function(){
 	before(function(done){
@@ -33,14 +34,6 @@ describe("User Model Test", function(){
 		});
 		done();
 	});
-
-	// it("create testing", function(done){
-	// 	console.log(123);
-	// 	user.test(function(err, data){
-	// 		console.log(data);
-	// 	});
-	// 	done();
-	// });
 
 	it("add a new valid user", function(done){
 		user.addUser("adele", "password", "hello@gmail.com", function(err, status){
@@ -74,66 +67,60 @@ describe("User Model Test", function(){
 
 	it("use find user exists and expect the user to exist", function(done){
 		user.findUser("meeko", function(err, data){
-			assert.equal("meeko", data.username);
-			assert.equal("123123", data.password);
-			assert.equal("meeko@gmail.com", data.email);
+			assert.equal("meeko", data[0].username);
+			assert.equal("123123", data[0].password);
+			assert.equal("meeko@gmail.com", data[0].email);
 		});
 		done();
 	});
 
 	it("find a null user", function(done){
 		user.findUser("", function(err, data){
-			assert.equal(data, null);
+			compare.eq(data, null);
 		});
 		done();
 	});
 
 	it("find a user that does not exist", function(done){
 		user.findUser("Allen", function(err, data){
-			assert.equal(null, data);
+			compare.eq(data, null);
 		});
 		done();
 	});
 
-	// it("login with valid credentials", function(){
-	// 	user.findUser("meeko", "123123", function(err, status){
-	// 		assert.equal("meeko", status.username);
-	// 		assert.equal("123123", status.password);
-	// 	});
-	// });
+	it("login with valid credentials", function(){
+		user.findUser("meeko", "123123", function(err, status){
+			assert.equal("meeko", status.username);
+			assert.equal("123123", status.password);
+		});
+	});
 
-	// it("delete user test", function(done){
-	// 	user.deleteUser("meeko", function(err, data){
-	// 		user.findAllUsers(function(err, data){
-	// 			//assert.equal(null, data);
-	// 		})
+	it("delete user test", function(done){
+		user.deleteUser("meeko", function(err, data){
+			user.findAllUsers(function(err, data){
+				compare.equal([], data);
+			})
+		});
+		done();
+	});
+
+	// it("add a comment to meeko user", function(done){
+	// 	user.addComment("meeko", "anna", "cutest cat ever", function(err, data){
+	// 		if(err) console.log(err);
+	// 		else{
+	// 			user.findUser("meeko", function(err, data){
+	// 				assert.equal(data[0].comment[1], "cutest cat ever");
+	// 			});
+	// 		}
 	// 	});
 	// 	done();
 	// });
-
-	it("add a comment to meeko user", function(done){
-		user.addComment("meeko", "anna", "cutest cat ever", function(err, data){
-			console.log(0);
-			user.findUser("meeko", function(err, data){
-				console.log(111);
-				console.log(data);
-			});
-		});
-		done();
-	});
-
-	it("add a comment to user that does not exist", function(done){
-		user.addComment("allen", "anna", "cutest cat ever", function(err, data){
-			assert.equal(data, null);
-		});
-		done();
-	});
 
 	it("finds all users when there is none", function(done){
 		user.removeAll(function(err, data){
 			if(!err){
 				user.findAllUsers(function(err, data){
-					assert.equal(data, null);
+					compare.equal(data, []);
 				});
 			}
 		});
@@ -143,8 +130,8 @@ describe("User Model Test", function(){
 	it("finds all users when there is only one user", function(done){
 		user.findAllUsers(function(err, data){
 			assert.equal(data[0].username, "meeko");
-			assert.equal(status.password, "123123");
-			assert.equal(status.email, "meeko@gmail.com")
+			assert.equal(data[0].password, "123123");
+			assert.equal(data[0].email, "meeko@gmail.com")
 		});
 		done();
 	});
@@ -153,7 +140,7 @@ describe("User Model Test", function(){
 		user.newRating("annie", 5, function(err, data){
 			if(!err){
 				user.findUser("annie", function(err, data){
-					assert.equal(data.rating, [5]);
+					assert.equal(data[0].rating, [5]);
 				});
 			}
 		});
@@ -175,7 +162,7 @@ describe("User Model Test", function(){
 		user.newRating("allen", 5, function(err, data){
 			if(!err){
 				user.findUser("allen", function(err, data){
-					assert.equal(data, null);
+					compare.equal(data, null);
 				});
 			}
 		});

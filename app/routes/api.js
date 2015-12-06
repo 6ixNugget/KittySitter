@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var model = require('../models/model');
 var auth = require('../helper/auth');
 var avg = require('../helper/avg');
+var url = require('url');
 var app = express();
 
 app.set('view engine','jade');
@@ -81,11 +82,11 @@ app.post('/newPost', function(req, res){
 			res.send({status:false, error: "Unknown error!"});
 		}
 		else if(data){
-			if(data.salt != salt){
+			if(data[0].salt != salt){
 				res.send({status:false, error: "Please login again"});
 			}
 			else{
-				model.newPost(username, title, address, description, contact, startDate, endDate, photo, function(err, data){
+				model.newPost(username, title, description, address, contact, startDate, endDate, photo, function(err, data){
 					if(err){
 						res.send({status:false, error: "Something went wrong"});
 					}
@@ -103,16 +104,17 @@ app.post('/newComment', function(req, res){
 	salt = req.cookie.salt;
 	target = req.body.username;
 	text = req.body.text;
-	model.findUser(username, function(err, data){
-		if(err || !data){
+	model.findUser(commenter, function(err, data){
+		if(err){
 			res.send({status:false, error: "Unknown error!"});
 		}
 		else if(data){
-			if(data.salt != salt){
+			if(data[0].salt != salt){
 				res.send({status:false, error: "Please login again"});
 			}
 			else{
-				model.newComment(target, commenter, text, function(err, data){
+				model.addComment(target, commenter, text, function(err, numAffected){
+					console.log(err);
 					if(err){
 						res.send({status:false, error: "Something went wrong"});
 					}
@@ -122,6 +124,9 @@ app.post('/newComment', function(req, res){
 				});
 			}
 		}
+		else{
+			res.send({status:false, error: "Please make sure who you are commenting"});
+		}
 	});
 });	
 
@@ -130,12 +135,12 @@ app.post('/newRating', function(req, res){
 	target = req.body.username;
 	salt = req.cookie.salt;
 	rater = req.cookie.username;
-	model.findUser(username, function(err, data){
-		if(err || !data){
+	model.findUser(rater, function(err, data){
+		if(err){
 			res.send({status:false, error: "Unknown error!"});
 		}
 		else if(data){
-			if(data.salt != salt){
+			if(data[0].salt != salt){
 				res.send({status:false, error: "Please login again"});
 			}
 			else{
@@ -163,36 +168,39 @@ app.get('/getAllPosts', function(req, res){
 	});
 });
 
-// app.get('/getAllUsers', function(req, res){
-// 	res.send({status: true});
-// });
+app.get('/getAllUsers', function(req, res){
+	res.send({status: true});
+});
 
 app.get('/getUserByUsername', function(req, res){
-	username = req.body.username;
-	model.findUser(username, function(err, user){
+	query = url.parse(req.url);
+	username = query.query.split("=")[1];
+	model.findUser(username, function(err, doc){
 		if(err){
 			res.send({status: false});
 		}
-		else if(user){
-			res.send({status: true, user: user});
-		}
-		else if(!user){
+		else if(doc.length == 0){
 			res.send({status: false, error: "The user does not exist"});
 		}
+		else if(doc){
+			res.send({status: true, user: doc[0]});
+		}
+
 	});
 });
 
 app.get('/getPostById', function(req, res){
-	id = req.body.id;
+	query = url.parse(req.url);
+	id = query.query.split("=")[1];
 	model.findPost(id, function(err, post){
 		if(err){
 			res.send({status: false});
 		}
+		else if(post.length == 0){
+			res.send({status:false, error: "The post does not exist"});
+		}
 		else if(post){
 			res.send({status:true, post: post});
-		}
-		else if(!post){
-			res.send({status:false, error: "The post does not exist"});
 		}
 	});
 });
@@ -215,8 +223,8 @@ app.post('/avgRating', function(req, res){
 			res.send({status: false, error: err});
 		}
 		else if(data){
-			avg.avg(data.rating);
-			res.send({status: true, avg: data});
+			avg = avg.avg(data[0].rating);
+			res.send({status: true, avg: avg});
 		}
 		else if(!data){
 			res.send({status: false, error: "Please check the username"});
