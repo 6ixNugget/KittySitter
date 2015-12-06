@@ -46,7 +46,7 @@ app.post('/signup', function (req, res) {
 		if(err.name == "ValidationError"){
 			res.send({status: false, error: "username is taken"});
 		}
-		else if(status){
+		if(status){
 			salt = auth.makeSalt();
 			user_db.updateSalt(username, salt, function(err, data){
 				if(err){
@@ -56,6 +56,9 @@ app.post('/signup', function (req, res) {
 					res.send({status: true, salt: salt, username: username});
 				}
 			});
+		}
+		else if(err){
+			res.send({status: false, error:err});
 		}
 		else if(!status){
 			res.send({status: false, error: "Unkown error!"});
@@ -190,6 +193,17 @@ app.get('/getPostById', function(req, res){
 		}
 		else if(!post){
 			res.send({status:false, error: "The post does not exist"});
+		}
+	});
+});
+
+app.post('/removeAllUsers', function(req, res){
+	user_db.removeAll(function(err, data){
+		if(err){
+			res.send({status: false, error: "Database error"});
+		}
+		else{
+			res.send({status: true});
 		}
 	});
 });

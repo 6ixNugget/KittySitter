@@ -4,7 +4,7 @@ var avg = require('../helper/avg');
 var assert = require('assert');
 var model = user.UserModel;
 
-mongoose.createConnection('mongodb://localhost/user_test');
+mongoose.connect('mongodb://localhost/user_test');
 
 describe("User Model Test", function(){
 	before(function(done){
@@ -74,14 +74,9 @@ describe("User Model Test", function(){
 
 	it("use find user exists and expect the user to exist", function(done){
 		user.findUser("meeko", function(err, data){
-			// assert.equal("meeko", data.username);
-			// assert.equal("123123", data.password);
-			// assert.equal("meeko@gmail.com", data.email);
-			user.addComment("meeko", function(err, data){
-				user.findUser("meeko", function(err, data){
-					console.log(data);
-				});
-			});
+			assert.equal("meeko", data.username);
+			assert.equal("123123", data.password);
+			assert.equal("meeko@gmail.com", data.email);
 		});
 		done();
 	});
