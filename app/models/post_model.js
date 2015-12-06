@@ -1,15 +1,15 @@
-var mongoose = require('mongoose');
+//var mongoose = require('mongoose');
 var user = require('../models/user_model');
 var fs = require('fs');
-var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+//var Schema = mongoose.Schema;
+var ObjectId = user.Schema.ObjectId;
 
-mongoose.createConnection('mongodb://localhost/kitty');
+//mongoose.createConnection('mongodb://localhost/kitty');
 
-var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+//var Schema = mongoose.Schema;
+var ObjectId = user.Schema.ObjectId;
 
-var postSchema = new Schema({
+var postSchema = new user.Schema({
 	id: ObjectId,
 	username: {type: String, required: true},
 	title: {type: String, required: true},
@@ -21,7 +21,7 @@ var postSchema = new Schema({
 	photo: {data: Buffer, contentType: String, required: false},
 });
 
-var testSchema = new Schema({
+var testSchema = new user.Schema({
 	test: {type: Number}
 });
 

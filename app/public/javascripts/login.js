@@ -15,7 +15,6 @@ $('#signin-form').submit(function(event){
 		return;
 	}
 
-
 	$.post('/api/signin', {username: username, password: password}, function(data){
 		alert(data.error);
 		event.preventDefault();
