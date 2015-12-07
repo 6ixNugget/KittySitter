@@ -2,23 +2,18 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/kitty');
 
 var Schema = mongoose.Schema;
-var commentSchema = new Schema({
-	commenter: {type: String},
-	text: {type: String}
-});
 
 var userSchema = new Schema({
 	username: {type: String, unique: true, required: true},
 	password: {type: String, required: true},
 	email: {type: String, required: true}, 
 	about: {type: String, required: false, default: null},
-	comment: {type: [commentSchema]},
-	rating: {type: [Number]},
+	comment: Array,
+	rating: Array,
 	salt: {type: String}
 });
 
 var UserModel = mongoose.model('User', userSchema);
-var CommentModel = mongoose.model('Comment', commentSchema);
 
 exports.addUser = function(username, password, email, callback){
 	var user = new UserModel({
@@ -26,8 +21,8 @@ exports.addUser = function(username, password, email, callback){
 		password: password,
 		email: email,
 		about: null,
-		comment: null,
-		rating: null,
+		comment: ["A new user"],
+		rating: [0],
 		salt: null
 	});
 	user.save(callback);
@@ -43,7 +38,6 @@ exports.updateSalt = function(username, salt, callback){
 }
 
 exports.findUser = function(username, callback){
-	console.log("in find user");
 	UserModel.find({username: username}, callback);
 }
 
@@ -59,18 +53,16 @@ exports.deleteUser = function(username, callback){
 		callback(err, data);
 	});
 }
-exports.addComment = function(target, commenter, comment, cb){
+exports.addComment = function(target, commenter, comment, callback){
 	query = UserModel.where({username: target});
-	newcomment = new CommentModel({
+	newcomment = {
 		commenter: commenter,
 		text: comment
-	});
-	UserModel.findOneAndUpdate(
-		query,
-		{$push: {comment: newcomment}},
-		function(err, data) {
-			cb(err, data);
-		});
+	}
+	UserModel.update(
+		{"username": target},
+		{$push: {"comment": newcomment}},
+		callback);
 }
 
 exports.newRating = function(username, newrating, callback){
@@ -108,17 +100,29 @@ exports.newPost = function(creator, title, description, address, contact, startD
 			data: fs.readFileSync(inputPhoto.path),
 			contentType: inputPhoto.type
 		}
+		post = new PostModel({
+			username: creator,
+			title: title,
+			description: description,
+			address: address,
+			contact: contact,
+			startDate: startDate,
+			endDate: endDate,
+			photo: img
+		});
 	}
-	post = new PostModel({
-		username: creator,
-		title: title,
-		description: description,
-		address: address,
-		contact: contact,
-		startDate: startDate,
-		endDate: endDate,
-		photo: img
-	});
+	else{
+		post = new PostModel({
+			username: creator,
+			title: title,
+			description: description,
+			address: address,
+			contact: contact,
+			startDate: startDate,
+			endDate: endDate,
+			photo: null
+		});
+	}		
 	post.save(function(err, poster){
 		callback(err, poster);
 	});
@@ -142,12 +146,11 @@ exports.deleteAllPosts = function(callback){
 	});
 }
 exports.allPosts = function(callback){
-	PostModel.find(function(err, posts){
-		callback(err, posts);
-	});
+	PostModel.find(callback);
 }
 
 exports.getPostByUser = function(username, callback){
+	console.log(username);
 	PostModel.find({username: username}, function(err, posts){
 		callback(err, posts);
 	});

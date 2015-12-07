@@ -3,5 +3,5 @@ exports.avg = function(ratings){
 	for(i = 0; i < ratings.length; i++){
 		sum += ratings[i];
 	}
-	return(sum/ratings.length);
+	return(sum/(ratings.length-1));
 }
