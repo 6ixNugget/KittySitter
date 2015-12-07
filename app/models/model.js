@@ -30,6 +30,13 @@ exports.addUser = function(username, password, email, callback){
 	user.save(callback);
 };
 
+exports.updateUser = function(username, password, email, about, callback){
+	UserModel.findOneAndUpdate(
+		{username: username},
+		{$set: {password: password},{email: email}, {about: about}},
+		{new: true}, callback
+	)
+}
 //once the users credentials match, the salt is updated
 exports.updateSalt = function(username, salt, callback){
 	UserModel.findOneAndUpdate(

@@ -68,8 +68,8 @@ app.post('/signup', function (req, res) {
 });
 
 app.post('/newPost', function(req, res){
-	username = req.cookie.username;
-	salt = req.cookie.salt;
+	username = req.cookies.username;
+	salt = req.cookies.salt;
 	title = req.body.title;
 	address = req.body.address;
 	description = req.body.description;
@@ -91,7 +91,7 @@ app.post('/newPost', function(req, res){
 						res.send({status:false, error: "Something went wrong"});
 					}
 					else{
-						res.send({status: true, post_id: data[0].id});
+						res.send({status: true, post_id: data.id});
 					}
 				});
 			}
@@ -100,8 +100,8 @@ app.post('/newPost', function(req, res){
 });
 
 app.post('/newComment', function(req, res){
-	commenter = req.cookie.username;
-	salt = req.cookie.salt;
+	commenter = req.cookies.username;
+	salt = req.cookies.salt;
 	target = req.body.username;
 	text = req.body.text;
 	model.findUser(commenter, function(err, data){
@@ -133,8 +133,8 @@ app.post('/newComment', function(req, res){
 app.post('/newRating', function(req, res){
 	rating = req.body.rating;
 	target = req.body.username;
-	salt = req.cookie.salt;
-	rater = req.cookie.username;
+	salt = req.cookies.salt;
+	rater = req.cookies.username;
 	model.findUser(rater, function(err, data){
 		if(err){
 			res.send({status:false, error: "Unknown error!"});
@@ -201,6 +201,32 @@ app.get('/getPostById', function(req, res){
 		}
 		else if(post){
 			res.send({status:true, post: post});
+		}
+	});
+});
+
+app.post('/updateProfile', function(req, res){
+	username = req.cookies.username;
+	salt = req.cookies.salt;
+	password = req.body.password;
+	email = req.body.email;
+	about = req.body.about;
+	model.findUser("username", function(err, data){
+		if(err){
+			res.send({status:false});
+		}
+		else if(data[0].salt != salt){
+			res.redirect('/login');
+		}
+		else{
+			model.updateUser(username, password, email, about, model, function(err, data){
+				if(err){
+					res.send({status:false});
+				}
+				else{
+					res.send({status:true});
+				}
+			});
 		}
 	});
 });
