@@ -29,9 +29,8 @@ router.get('/post/:post_id', function(req, res, next){
 });
 
 router.get('/newPost', function(req, res, next){
-	res.render('newPost', {postData: data, 
-							post_id: req.params.post_id,
-							loginStatus: {status: true, username: "Allen"}
+	username = req.cookies.username;
+	res.render('newPost', {loginStatus: {status: true, username: username}
 						});
 });
 
