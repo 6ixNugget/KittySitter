@@ -1,4 +1,6 @@
-$('#np_submit').click(function(){
+$('#np_submit').click(function(event){
+    event.preventDefault();
+    alert("notRedirect");
     var formData = new FormData($('form')[0]);
     $.ajax({
         url: '/api/newPost',  //Server script to process data

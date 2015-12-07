@@ -92,41 +92,23 @@ var postSchema = new Schema({
 	contact: {type: String, required: true},
 	startDate: {type: Date, required: true},
 	endDate: {type: Date, required: true},
-	photo: {data: Buffer, contentType: String, required: false},
+	photo: {type:String}
 });
 
 var PostModel = mongoose.model('Post', postSchema);
 
 //creating a new post
 exports.newPost = function(creator, title, description, address, contact, startDate, endDate, inputPhoto, callback){
-	if(inputPhoto != null){
-		img = {
-			data: fs.readFileSync(inputPhoto.path),
-			contentType: inputPhoto.type
-		}
-		post = new PostModel({
-			username: creator,
-			title: title,
-			description: description,
-			address: address,
-			contact: contact,
-			startDate: startDate,
-			endDate: endDate,
-			photo: img
-		});
-	}
-	else{
-		post = new PostModel({
-			username: creator,
-			title: title,
-			description: description,
-			address: address,
-			contact: contact,
-			startDate: startDate,
-			endDate: endDate,
-			photo: null
-		});
-	}		
+	post = new PostModel({
+		username: creator,
+		title: title,
+		description: description,
+		address: address,
+		contact: contact,
+		startDate: startDate,
+		endDate: endDate,
+		photo: inputPhoto
+	});	
 	post.save(function(err, poster){
 		callback(err, poster);
 	});
