@@ -5,6 +5,8 @@ var model = require('../models/model');
 var auth = require('../helper/auth');
 var avg = require('../helper/avg');
 var url = require('url');
+var multiparty = require('multiparty');
+var util = require('util');
 var app = express();
 
 app.set('view engine','jade');
@@ -155,6 +157,17 @@ app.post('/newRating', function(req, res){
 			}
 		}
 	});	
+});
+
+app.post('/photos', function(req, res) {
+	console.log(1111111);
+	var form = new multiparty.Form();
+	form.parse(req, function(err, fields, files){
+		console.log(err);
+		console.log(fields);
+		console.log(files);
+		util.inspect({fields: fields, files: files});
+	})
 });
 
 app.get('/getAllPosts', function(req, res){

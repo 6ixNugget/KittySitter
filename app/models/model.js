@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var fs = require('fs');
 mongoose.connect('mongodb://localhost/kitty');
 
 var Schema = mongoose.Schema;
@@ -15,6 +16,7 @@ var userSchema = new Schema({
 
 var UserModel = mongoose.model('User', userSchema);
 
+//adding a new user to the database
 exports.addUser = function(username, password, email, callback){
 	var user = new UserModel({
 		username: username,
@@ -28,6 +30,7 @@ exports.addUser = function(username, password, email, callback){
 	user.save(callback);
 };
 
+//once the users credentials match, the salt is updated
 exports.updateSalt = function(username, salt, callback){
 	UserModel.findOneAndUpdate(
 		{username: username},
@@ -94,6 +97,7 @@ var postSchema = new Schema({
 
 var PostModel = mongoose.model('Post', postSchema);
 
+//creating a new post
 exports.newPost = function(creator, title, description, address, contact, startDate, endDate, inputPhoto, callback){
 	if(inputPhoto != null){
 		img = {
@@ -145,6 +149,7 @@ exports.deleteAllPosts = function(callback){
 		callback(err, data);
 	});
 }
+
 exports.allPosts = function(callback){
 	PostModel.find(callback);
 }
