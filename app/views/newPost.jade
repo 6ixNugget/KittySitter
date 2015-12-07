@@ -15,15 +15,18 @@ block content
         p New Post
       .posts-container
         .post-container
-          form(enctype="multipart/form-data")
+          form#np_form(action="/api/newPost", method="post")
             h3.post-title Create a new post for your cute kitty!
             hr
             .post-img
               img(src='http://mcdaniel.hu/wp-content/uploads/2015/01/6784063-cute-cats-hd.jpg')
             hr
-            h3 Picture
+            h3 Picture (only support URL)
               br
-              input#np_image(type="file",name="pic", accept="image/*")
+              input#np_image(type="text", name="pic")
+            h3 title
+              br
+              textarea#np_title(type="text", name="title")
             h3 Description
               br
               textarea#np_description(type="text", name="description")
@@ -42,8 +45,7 @@ block content
               input#np_end_date(type="date", name="endDate")
             h3 Post By
               h4 #{loginStatus.username}
-            button#np_submit.btn.btn-default.np_submit(value="Submit") Submit
-
+            input.btn.btn-default.np_submit(type="submit", value="Submit")
 
   script(src='/javascripts/newPost.js')
   script(src='/javascripts/map.js')
