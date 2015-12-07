@@ -68,6 +68,11 @@ app.post('/signup', function (req, res) {
 });
 
 app.post('/newPost', function(req, res){
+<<<<<<< Updated upstream
+=======
+	console.log("username:");
+	console.log(req.cookies.username);
+>>>>>>> Stashed changes
 	username = req.cookies.username;
 	salt = req.cookies.salt;
 	title = req.body.title;
@@ -77,6 +82,7 @@ app.post('/newPost', function(req, res){
 	startDate = req.body.startDate;
 	endDate = req.body.endDate;
 	photo = req.body.photo;
+
 	model.findUser(username, function(err, data){
 		if(err || !data){
 			res.send({status:false, error: "Unknown error!"});
@@ -91,7 +97,11 @@ app.post('/newPost', function(req, res){
 						res.send({status:false, error: "Something went wrong"});
 					}
 					else{
+<<<<<<< Updated upstream
 						res.send({status: true, post_id: data.id});
+=======
+						res.send({status: true, post_id: data._id});
+>>>>>>> Stashed changes
 					}
 				});
 			}
@@ -100,10 +110,15 @@ app.post('/newPost', function(req, res){
 });
 
 app.post('/newComment', function(req, res){
+<<<<<<< Updated upstream
+=======
+	console.log("benn here");
+>>>>>>> Stashed changes
 	commenter = req.cookies.username;
 	salt = req.cookies.salt;
 	target = req.body.username;
 	text = req.body.text;
+	console.log("benn her2e");
 	model.findUser(commenter, function(err, data){
 		if(err){
 			res.send({status:false, error: "Unknown error!"});
@@ -132,6 +147,7 @@ app.post('/newComment', function(req, res){
 
 app.post('/newRating', function(req, res){
 	rating = req.body.rating;
+	rating = Number(rating);
 	target = req.body.username;
 	salt = req.cookies.salt;
 	rater = req.cookies.username;
@@ -185,7 +201,6 @@ app.get('/getUserByUsername', function(req, res){
 		else if(doc){
 			res.send({status: true, user: doc[0]});
 		}
-
 	});
 });
 
@@ -241,6 +256,18 @@ app.post('/removeAllUsers', function(req, res){
 		}
 	});
 });
+
+app.get('/removeAllPosts', function(req, res){
+	model.deleteAllPosts(function(err, data){
+		if(err){
+			res.send({status: false, error: "Database error"});
+		}
+		else{
+			res.send({status: true});
+		}
+	});
+});
+
 
 app.post('/avgRating', function(req, res){
 	user = req.body.username;

@@ -1,8 +1,6 @@
 var map;
 
-var locations = [{name: "832 Bay Street", lat: 43.663, lng: -79.3864},
-                  {name: "Casa Loma", lat: 43.678041, lng: -79.4116326},
-                  {name: "Eglinton station", lat: 43.7053655, lng: -79.400579}]
+var locas = []
 
 
 function createMarker(location){
@@ -27,16 +25,31 @@ function createMarker(location){
 }
 
 function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 43.663, lng: -79.3864},
-    zoom: 12,
-    mapTypeControlOptions: {
-        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-        position: google.maps.ControlPosition.BOTTOM_LEFT
-    }
+  $('.new_post').each(function(){
+      api = "https://maps.googleapis.com/maps/api/geocode/json?address=ADDRESS_PLACE_HOLDER&key=AIzaSyBtH3mU3MCHy5eit3re5KJl12UUOySL9cc"
+      address = $(this).attr("loca");
+      address = address.split(' ').join('+');
+      api = api.replace("ADDRESS_PLACE_HOLDER", address);
+      $.get(api, function(geodata){
+        loca = {name: geodata.results[0].formatted_address,
+            lat: geodata.results[0].geometry.location.lat,
+            lng: geodata.results[0].geometry.location.lng
+        };
+        locas.push(loca);
+      });
   });
+  map = new google.maps.Map(document.getElementById('map'), {
+  center: {lat: 43.663, lng: -79.3864},
+  zoom: 12,
+  mapTypeControlOptions: {
+      style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+      position: google.maps.ControlPosition.BOTTOM_LEFT
+      }
+  });
+  setTimeout(function() {
+      for (var i in locas){
+        createMarker(locas[i]);
+    }
+  }, 1000);
 
-  for (var i in locations){
-    createMarker(locations[i]);
-  }
 }

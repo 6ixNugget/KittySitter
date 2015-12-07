@@ -26,7 +26,9 @@ nav.navbar.navbar-default.navbar-custom.navbar-fixed-top
             a#nav-signout(href='#')
               | Sign Out 
               span.sr-only (current)
+          li
+            a(href='/newPost') Create new post
 
-      form.navbar-form.navbar-right(role='search')
+      form#search_form.navbar-form.navbar-right(role='search')
         .form-group
-          input.form-control(type='text', placeholder='Search')
+          input#searchbox.form-control(type='text', placeholder='Search for a user by username')

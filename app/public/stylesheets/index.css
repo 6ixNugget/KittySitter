@@ -91,3 +91,6 @@ html, body {
 .np_submit{
 	margin-left: 15em;
 }
+#new_rating{
+	max-width: 5em;
+}

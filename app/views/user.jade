@@ -13,7 +13,7 @@ block content
         p User
       .posts-container
         .post-container
-          h3.post-title #{postData.username}
+          h3#username.post-title #{postData.username}
           hr
           .post-img
             img(src='http://ovenbakedtradition.com/wp-content/uploads/communaute/2011/06/bigstockphoto_woman_with_cat_734854.jpg')
@@ -24,8 +24,17 @@ block content
             h5 #{postData.about}
           h3 Rating
             h5 #{postData.rating}
+              input#new_rating(type="number",min="1",max="5")
+              button#add_rating add
           h3 Comments
-              each item in postData.comment
-                h5= item.text + '     --' + item.commenter        
+                each item in postData.comment
+                  if item != "A new user"
+                    h5= item.text + '     --' + item.commenter
+                  else
+                    h5 no comment so far
+                textarea#new_comment(type="text", name="comment", placeholder="Add new comment")
+                button#add_comment(type="button") submit
+
+  script(src='/javascripts/user.js')              
   script(src='/javascripts/map.js')
   script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBtH3mU3MCHy5eit3re5KJl12UUOySL9cc&callback=initMap', async='', defer='')

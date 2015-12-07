@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var model = require('../models/model');
 
 var data = {id: 123123123213,
 			username: "allen",
@@ -14,18 +15,38 @@ var data = {id: 123123123213,
 
 // GET Index page.
 router.get('/', function(req, res, next) {
-	username = req.cookies.username;
-	res.render('index', {loginStatus: {status: true, username: username}});
+	var username = req.cookies.username;
+	if(!username) {
+		res.redirect('/login');
+		return;
+	}
+	model.allPosts(function(err, posts){
+		if(err){
+			 res.status(500).send('Internal server error');
+		}
+		else{
+			res.render('index', {posts: posts,
+								loginStatus: {status: true, username: username}});
+		}
+	});
 });
 
 router.get('/post/:post_id', function(req, res, next){
-	data.startDate = new Date();
-	data.endDate = new Date();
-	console.log(data.startDate);
-	res.render('post', {postData: data, 
-						post_id: req.params.post_id,
-						loginStatus: {status: true, username: "Allen"}
-					});
+	var id = req.params.post_id;
+	var username = req.cookies.username;
+	model.findPost(id, function(err, doc){
+		if(err){
+			res.redirect('/404');
+		}
+		else if(!doc){
+			res.redirect('/404');
+		}
+		else if(doc){
+			res.render('post', {postData: doc, 
+								loginStatus: {status: true, username: username}
+							});
+		}
+	});
 });
 
 router.get('/newPost', function(req, res, next){

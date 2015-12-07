@@ -17,6 +17,7 @@ $('#np_form').submit(function(event){
         endDate: new Date(endDate)
     };
     $.post('/api/newPost',new_post,function(data){
+        console.log(data);
         if(data.status){
             window.location.replace('/post/'+ data.post_id);
         }

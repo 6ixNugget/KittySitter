@@ -15,18 +15,27 @@ block content
         p Posts
       .posts-container
         ul
+          each item in posts
+            li.post-li.new_post(loca= item.address)
+              a(href='/post/' +item._id)
+                h3.post-title #{item.title}
+                .post-img
+                  if (item.photo == "")
+                    img(src= "http://mcdaniel.hu/wp-content/uploads/2015/01/6784063-cute-cats-hd.jpg")
+                  else
+                    img(src= item.photo)
           li.post-li
-            a(href="/post/1")
-              h3.post-title Cutest kitty in the mission!
+            a(href="/")
+              h3.post-title Cutest kitty in town!
               .post-img
-                img(src='http://mcdaniel.hu/wp-content/uploads/2015/01/6784063-cute-cats-hd.jpg')
+                img(src='http://fraservalleyhumanesociety.com/wp-content/uploads/2015/11/6974484-cute-cat-smile.jpg')
           li.post-li
-            a(href='/post/2')
+            a(href='/')
               h3.post-title  Blah Blah but Blah bah
               .post-img
                 img(src='http://www.pageresource.com/wallpapers/wallpaper/cats-love-cat_809088.jpg')
           li.post-li
-            a(href='/post/3')
+            a(href='/')
               h3.post-title Ehhh Lmao We did it!
               .post-img
                 img(src='https://www.petfinder.com/wp-content/uploads/2012/11/101438745-cat-conjunctivitis-causes.jpg')
