@@ -83,7 +83,7 @@ app.post('/newPost', function(req, res){
 		}
 		else if(data){
 			if(data[0].salt != salt){
-				res.send({status:false, error: "Please login again"});
+				res.redirect('/login');
 			}
 			else{
 				model.newPost(username, title, description, address, contact, startDate, endDate, photo, function(err, data){
@@ -91,7 +91,7 @@ app.post('/newPost', function(req, res){
 						res.send({status:false, error: "Something went wrong"});
 					}
 					else{
-						res.send({status: true});
+						res.send({status: true, post_id: data[0].id});
 					}
 				});
 			}
@@ -110,7 +110,7 @@ app.post('/newComment', function(req, res){
 		}
 		else if(data){
 			if(data[0].salt != salt){
-				res.send({status:false, error: "Please login again"});
+				res.redirect('/login');
 			}
 			else{
 				model.addComment(target, commenter, text, function(err, numAffected){
@@ -141,7 +141,7 @@ app.post('/newRating', function(req, res){
 		}
 		else if(data){
 			if(data[0].salt != salt){
-				res.send({status:false, error: "Please login again"});
+				res.redirect('/login');
 			}
 			else{
 				model.newRating(target, rating, function(err, data){
