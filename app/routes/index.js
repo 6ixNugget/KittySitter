@@ -14,7 +14,8 @@ var data = {id: 123123123213,
 
 // GET Index page.
 router.get('/', function(req, res, next) {
-  res.render('index', {loginStatus: {status: true, username: "Allen"}});
+	username = req.cookies.username;
+	res.render('index', {loginStatus: {status: true, username: username}});
 });
 
 router.get('/post/:post_id', function(req, res, next){
@@ -26,5 +27,12 @@ router.get('/post/:post_id', function(req, res, next){
 						loginStatus: {status: true, username: "Allen"}
 					});
 });
+
+router.get('/newPost', function(req, res, next){
+	username = req.cookies.username;
+	res.render('newPost', {loginStatus: {status: true, username: username}
+						});
+});
+
 
 module.exports = router;

@@ -1,0 +1,51 @@
+extends layout
+
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/index.css')
+  link(href='https://fonts.googleapis.com/css?family=Raleway:200', rel='stylesheet', type='text/css')
+  link(href='https://fonts.googleapis.com/css?family=Montserrat', rel='stylesheet', type='text/css')
+  link(type='text/css', rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:300,400,500')
+
+
+block content
+  .container
+    #map
+    .right-half
+      .posts-banner 
+        p New Post
+      .posts-container
+        .post-container
+          form(enctype="multipart/form-data")
+            h3.post-title Create a new post for your cute kitty!
+            hr
+            .post-img
+              img(src='http://mcdaniel.hu/wp-content/uploads/2015/01/6784063-cute-cats-hd.jpg')
+            hr
+            h3 Picture
+              br
+              input#np_image(type="file",name="pic", accept="image/*")
+            h3 Description
+              br
+              textarea#np_description(type="text", name="description")
+            h3 Address
+              br
+              #locationField
+                input#np_address(type="text", name="address", onFocus="geolocate()")
+            h3 Contant Email
+              br
+              input#np_email(type="email", name="email")
+            h3 Start Date
+              br
+              input#np_start_date(type="date", name="startDate")
+            h3 End Date
+              br
+              input#np_end_date(type="date", name="endDate")
+            h3 Post By
+              h4 #{loginStatus.username}
+            button#np_submit.btn.btn-default.np_submit(value="Submit") Submit
+
+
+  script(src='/javascripts/newPost.js')
+  script(src='/javascripts/map.js')
+  script(src='/javascripts/autocomplete.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBtH3mU3MCHy5eit3re5KJl12UUOySL9cc&signed_in=true&libraries=places&callback=initEverything', async='', defer='')

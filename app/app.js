@@ -8,7 +8,7 @@ var mongoose = require("mongoose");
 var mocha = require("mocha");
 
 var login = require('./routes/login');
-var users = require('./routes/users');
+var users = require('./routes/user');
 var routes = require('./routes/index');
 var api = require('./routes/api');
 
@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/user', users);
 app.use('/login', login);
 app.use('/api', api);
 

@@ -48,6 +48,7 @@ html, body {
 	height: calc(92% - 50px);
 	top: calc(8% + 50px);
 	overflow: scroll;
+	padding-bottom: 20px;
 }
 .posts-container ul{
 	width: 100%;
@@ -72,12 +73,21 @@ html, body {
 }
 /* one post styles */
 .post-container {
+	font-family: 'Raleway', sans-serif;
 	width: 100%;
 	padding: 0px 40px;
+}
+.post-container input,textarea,h4,h5{
+	margin: 20px;
+	width: 50rem;
+	font-size: 20px;
 }
 .post-container hr{
     border: 0;
     height: 1px;
     background: #333;
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+.np_submit{
+	margin-left: 15em;
 }
